@@ -11,6 +11,25 @@ theme = 'PaperMod'
   showReadingTime = true
   showShareButtons = true
   defaultTheme = "auto"
+  disableThemeToggle = false
+  ShowCodeCopyButtons = true
+  ShowShareButtons = true
+  ShowBreadCrumbs = true
+  ShowPostNavLinks = true
+  ShowToc = true
+  TocOpen = true
+
+[params.homeInfoParams]
+  Title = "Hey, I'm Nishanth 👋"
+  Content = "Swift, Architecture & Tech Rants. Explore my deep dives on Swift, Architecture, and Mobile Mastery below."
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/nishanth-bs"
+
+[[params.socialIcons]]
+  name = "linkedin"
+  url = "https://linkedin.com/in/nishanth-bs"
 
 [permalinks]
   posts = "/:slug/"

@@ -105,75 +105,376 @@
 <div class="not-found">404</div>
     </main>
     
+<div id="progress-bar"></div>
+
+
+<div id="read-tooltip">🐣 Just started</div>
+
+
+<canvas id="confetti-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:99999;"></canvas>
+
+
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Decoded With Nishanth</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    <span>&copy; 2025 <a href="http://localhost:1313/">Decoded With Nishanth</a></span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+
+<a href="#top" id="top-link" title="Back to top">⬆️</a>
+
+
+<style>
+    #progress-bar {
+        height: 6px;
+        background: linear-gradient(270deg, #006eff, #0072ff);
+        background-size: 400% 400%;
+        width: 0%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        transition: width 0.25s ease-out;
+        box-shadow: 0 0 8px rgba(0, 114, 255, 0.4);
+    }
+
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
         }
     }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
+    #read-tooltip {
+        position: fixed;
+        top: 10px;
+        right: 12px;
+        background: #1e88e5;
+        color: white;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 6px;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease, transform 0.3s;
+        font-family: sans-serif;
+    }
+
+    #read-tooltip.visible {
+        opacity: 0.9;
+    }
+
+    #read-tooltip.pulse {
+        animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.15);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    #top-link {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        display: none;
+        font-size: 24px;
+        z-index: 9999;
+    }
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            const body = document.body;
+            const current = body.classList.contains("dark") ? "dark" : "light";
+            const next = current === "dark" ? "light" : "dark";
+            body.classList.toggle("dark");
+            localStorage.setItem("pref-theme", next);
         });
+
+        const savedTheme = localStorage.getItem("pref-theme");
+        if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.body.classList.add("dark");
+        }
+    }
+
+    
+    const hour = new Date().getHours();
+    if (hour >= 18 || hour < 6) {
+        document.body.classList.add("dark");
+    }
+
+    
+    const topBtn = document.getElementById("top-link");
+    window.addEventListener("scroll", () => {
+        topBtn.style.display = window.scrollY > 400 ? "block" : "none";
     });
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+    
+    (function () {
+        const progressBar = document.getElementById("progress-bar");
+        const tooltip = document.getElementById("read-tooltip");
+        const confettiCanvas = document.getElementById("confetti-canvas");
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
+        
+        const isHome = window.location.pathname === "/" || window.location.pathname === "/index.html";
+        if (isHome) {
+            progressBar.style.display = "none";
+            tooltip.style.display = "none";
+            confettiCanvas.style.display = "none";
+            return;
         }
-    })
 
-</script>
-</body>
+        let hideTimer = null;
+        let lastStage = -1;
+
+        const stages = [0, 25, 50, 75, 100];
+
+        const shownStages = new Set(); 
+        const phrases = {
+            0: [
+                "Just a scroll away from something cool.",
+                "This won't take long—promise.",
+                "Your mind’s about to get a treat.",
+                "Let’s unlock a new insight today.",
+                "Brace yourself. Gold ahead.",
+                "This is the post you're looking for.",
+                "Scroll when you're ready. 😏",
+                "Quick value. Stay with it.",
+                "Skimming? You’ll miss the best parts.",
+                "👀 Just look down...",
+                "Welcome! Let’s get into it.",
+                "Don’t just click away. Scroll a bit.",
+                "If you scroll, magic happens.",
+                "This ain’t fluff. Trust me.",
+                "Thought-provoking stuff ahead.",
+                "One scroll = one insight.",
+                "Your attention will pay off.",
+                "Hit that scroll. Unlock it.",
+                "Every expert starts here.",
+                "Go beyond headlines."
+            ],
+            25: [
+                "Most readers stop here—don't be 'most'.",
+                "You're past the intro—let’s go deeper.",
+                "Keep going. Real gems start now.",
+                "Still with me? The good stuff’s just ahead.",
+                "You’re not a skimmer, right?",
+                "🔥 Momentum's building—ride it.",
+                "You made it further than 60% of visitors.",
+                "That curiosity? Feed it a little more.",
+                "Trust me, it gets more practical here.",
+                "💡 Insights are about to hit.",
+                "People bail here. But you’re smarter.",
+                "Let’s go past surface-level.",
+                "Depth is where value lives.",
+                "Scroll ≠ commitment. But it’s close.",
+                "Hooked yet? Keep digging.",
+                "Still scrolling? You're crushing it.",
+                "Short attention spans? Not yours.",
+                "The meat of the post starts here.",
+                "Stay with me — it gets juicy.",
+                "This part will surprise you."
+            ],
+            50: [
+                "You’re halfway to brilliance.",
+                "This is the 'aha!' zone.",
+                "Power through. You’re absorbing now.",
+                "Still reading? You’re rare. 💎",
+                "More than theory ahead—examples incoming.",
+                "Your future self thanks you.",
+                "📈 Retention rising. Keep scrolling.",
+                "Half-done ≠ done. Stick with it.",
+                "This is where others quit. Not you.",
+                "🧠 Brain activated. Let’s finish it.",
+                "Halfway heroes are the real MVPs.",
+                "Keep your eyes on the insight.",
+                "You’re deep in the content now.",
+                "Still locked in? Impressive.",
+                "Smart minds push past this.",
+                "Your focus is elite.",
+                "Ideas forming? Let’s build more.",
+                "🧩 You’re piecing it together.",
+                "Big picture clarity up next.",
+                "You’re in the thinking zone."
+            ],
+            75: [
+                "So close! Don’t lose steam.",
+                "This last part ties it all together.",
+                "Almost done. You’ll want to see this.",
+                "Wrapping up soon—stick for the takeaway.",
+                "The summary’s near. You earned it.",
+                "🚀 Let’s finish strong.",
+                "Few reach this far. You're one of them.",
+                "Still scrolling? You're elite. 🔥",
+                "That last 25% → clarity zone.",
+                "✨ Stick for the closer. It’s worth it.",
+                "Insights consolidate now. Pay attention.",
+                "You’ve scrolled more than 90% of readers.",
+                "It’s crescendo time.",
+                "Pat yourself. You're nearly there.",
+                "Drop-off zone? Not today.",
+                "Final examples are 🔥.",
+                "Don't skip the conclusion.",
+                "This is where ideas connect.",
+                "Clarity often comes right at the end.",
+                "Let’s seal the deal."
+            ],
+            100: [
+                "🎉 You did it. Now own it.",
+                "Boom. Another post crushed.",
+                "🧠 Knowledge absorbed!",
+                "Done. Reflect. Apply.",
+                "🔥 You’re unstoppable.",
+                "That’s how pros read. 👏",
+                "Badge unlocked: Focused Reader",
+                "Send this to someone who skims. 😅",
+                "Crushed it. Now share it?",
+                "One read closer to mastery.",
+                "🏆 Reader’s badge unlocked.",
+                "🎓 Learned something? Pass it on.",
+                "You actually finished. Respect.",
+                "Legends read till the end.",
+                "Drop a comment now?",
+                "Still thinking about it? Good sign.",
+                "You’re 1% of readers who finish.",
+                "End? More like launchpad.",
+                "Thanks for sticking around!",
+                "🚀 You just leveled up."
+            ]
+        };
+
+        function getStage(percent) {
+            return stages.slice().reverse().find(stage => percent >= stage);
+        }
+
+        function getRandomPhrase(stage) {
+            const list = phrases[stage];
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function saveScrollPercent(percent) {
+            const key = `scroll:${window.location.pathname}`;
+            localStorage.setItem(key, percent);
+        }
+
+        function loadScrollPercent() {
+            const key = `scroll:${window.location.pathname}`;
+            return parseInt(localStorage.getItem(key)) || 0;
+        }
+
+        function restoreScroll(percent) {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const target = Math.round((percent / 100) * totalHeight);
+            window.scrollTo(0, target);
+        }
+
+        function updateProgress() {
+            const scrollTop = window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = Math.min(100, Math.round((scrollTop / scrollHeight) * 100));
+            const stage = getStage(percent);
+
+            progressBar.style.width = `${percent}%`;
+            saveScrollPercent(percent);
+
+            
+            if (!shownStages.has(stage)) {
+                const phrase = getRandomPhrase(stage);
+                tooltip.innerText = phrase;
+                tooltip.classList.add("pulse", "visible");
+
+                tooltip.classList.add("visible");
+                if (hideTimer) clearTimeout(hideTimer);
+                hideTimer = setTimeout(() => tooltip.classList.remove("visible"), 2000);
+
+                tooltip.addEventListener("animationend", () => {
+                    tooltip.classList.remove("pulse");
+                }, { once: true });
+                shownStages.add(stage); 
+
+            }
+            if (stage === 100) {
+                fireConfetti();
+            }
+        }
+
+        let hasFiredConfetti = false;
+
+        function fireConfetti() {
+            if (window.hasFiredConfetti) return;
+            window.hasFiredConfetti = true;
+
+            confetti({
+                particleCount: 1000,          
+                angle: 90,                   
+                spread: 120,                 
+                startVelocity: 60,           
+                gravity: 0.9,                
+                ticks: 300,                  
+                scalar: 1.2,                 
+                origin: {
+                    x: 0.5,                    
+                    y: 1.0                     
+                },
+                colors: [
+                    "#f94144", 
+                    "#f3722c", 
+                    "#f8961e", 
+                    "#f9c74f", 
+                    "#90be6d", 
+                    "#43aa8b", 
+                    "#577590", 
+                    "#277da1", 
+                    "#9d4edd", 
+                    "#e1306c", 
+                ]
+            });
+        }
+
+        function launchConfetti() {
+            const duration = 2 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { origin: { y: 0.6 }, startVelocity: 30 };
+
+            const confetti = window.confetti.create(confettiCanvas, { resize: true });
+            const interval = setInterval(() => {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                confetti({ ...defaults, particleCount: 30, spread: 100 });
+            }, 200);
+        }
+
+        window.addEventListener("load", () => {
+            const saved = loadScrollPercent();
+            shownStages.clear(); 
+            if (saved > 10 && saved < 90) restoreScroll(saved);
+            updateProgress();
+        });
+
+        window.addEventListener("scroll", updateProgress);
+    })();
+</script></body>
 
 </html>

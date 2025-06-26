@@ -110,76 +110,61 @@
 <ul class="terms-tags">
 </ul>
     </main>
-    
-<footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Decoded With Nishanth</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
+    <div id="progress-bar"></div>
 <script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
+    const hour = new Date().getHours();
+    if (hour >= 18 || hour < 6) {
+        document.body.classList.add('dark');
     }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
+    window.onscroll = function () {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progress-bar").style.width = scrolled + "%";
+    };
+</script>
+
+<footer class="footer">
+    <span>&copy; 2025 <a href="http://localhost:1313/">Decoded With Nishanth</a></span>
+</footer>
+<script>
+    const toggle = document.getElementById("theme-toggle");
+
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            const body = document.body;
+            if (body.classList.contains("dark")) {
+                body.classList.remove("dark");
+                localStorage.setItem("pref-theme", "light");
             } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
+                body.classList.add("dark");
+                localStorage.setItem("pref-theme", "dark");
             }
         });
-    });
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
+        const savedTheme = localStorage.getItem("pref-theme");
+        if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.body.classList.add("dark");
         }
-    };
-
+    }
 </script>
+
+<a href="#top" id="top-link" title="Back to top">⬆️</a>
+<style>
+  #top-link {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: none;
+    font-size: 24px;
+  }
+</style>
 <script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
+  const topBtn = document.getElementById("top-link");
+  window.onscroll = () => {
+    topBtn.style.display = window.scrollY > 400 ? "block" : "none";
+  };
+</script></body>
 
 </html>
