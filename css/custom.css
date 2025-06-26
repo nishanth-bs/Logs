@@ -1,0 +1,254 @@
+#progress-bar {
+    height: 4px;
+    background: #1e88e5;
+    width: 0%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  /* Clean and scalable header padding */
+.site-header {
+    padding: 1rem 2rem;
+  }
+  
+  /* Optional: Improve spacing for logo + nav links */
+  .site-header .logo {
+    margin-right: 1rem;
+  }
+  
+  .nav {
+    gap: 1rem;
+  }
+  
+  /* Optional: Add a shadow and sticky header if desired */
+  .site-header {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: var(--theme);
+  }
+
+  /* Adding different color
+  ---------------------------*/
+
+
+  /* Clay & Copper: Balanced Readability Version */
+
+:root {
+  --body-bg: #FDF9F3;
+  --text-color: #2C2118;
+  --primary: #C9714A;
+  --primary-contrast: #ffffff;
+  --link-color: #9F4A2E;
+  --pre-bg: #FAF4EE;
+  --blockquote-border: #C9714A;
+}
+
+body {
+  background-color: var(--body-bg);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+pre, code {
+  background-color: var(--pre-bg) !important;
+}
+
+blockquote {
+  border-left: 4px solid var(--blockquote-border);
+  background-color: #FFF2E3;
+  padding-left: 1rem;
+}
+
+/* Dark mode */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: #161311;
+    --text-color: #F1ECE7;
+    --primary: #C9714A;
+    --primary-contrast: #1E1B18;
+    --link-color: #FFA07A;
+    --pre-bg: #26221E;
+    --blockquote-border: #C9714A;
+  }
+
+  body {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+  }
+
+  a {
+    color: var(--link-color);
+  }
+
+  pre, code {
+    background-color: var(--pre-bg) !important;
+  }
+
+  blockquote {
+    border-left: 4px solid var(--blockquote-border);
+    background-color: #1E1B18;
+    padding-left: 1rem;
+  }
+}
+
+/* Force background when class="dark" is applied by PaperMod */
+body.dark {
+  background-color: #161311 !important;
+  color: #F1ECE7 !important;
+}
+
+body.dark a {
+  color: #FFA07A !important;
+}
+
+body.dark pre,
+body.dark code {
+  background-color: #26221E !important;
+}
+
+body.dark blockquote {
+  background-color: #1E1B18 !important;
+  border-left: 4px solid #C9714A !important;
+}
+
+/* For the navbar cramped up position
+------------------------------------ */
+nav.nav {
+  padding-top: 3rem;
+}
+
+
+.site-header {
+  position: static !important; /* or just remove 'position: sticky' */
+  box-shadow: none !important;
+}
+
+/* Base header */
+header.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff; /* opaque background */
+  color: #1E1B18;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  will-change: transform;
+}
+
+/* Dark mode */
+body.dark header.header {
+  background-color: #161311;
+  color: #F1ECE7;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Hide on scroll down */
+header.header.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.nav a {
+  text-decoration: none;
+  position: relative;
+  color: var(--link-color);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--link-color);
+  transition: width 0.3s ease, height 0s ease;
+}
+
+.nav a:hover::after,
+.nav a.active::after {
+  width: 100%;
+}
+.nav a.active {
+  color: var(--primary);
+}
+
+.nav a span.active {
+  position: relative;
+  display: inline-block;
+}
+
+.nav a span.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.4px;
+  background: var(--link-color);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+img[src*="nishanth2x"] {
+  width: 40%;
+  min-width: 96px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo a::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 48px;
+  height: 48px;
+  margin-right: 0.5rem;
+  background-image: url("/images/nishanth0.5x.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+/* default (light mode) */
+.coming-soon-img {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* dark mode override */
+@media (prefers-color-scheme: dark) {
+  .coming-soon-img {
+    content: url("/images/comingsoon-dark.png");
+  }
+}
+
+html[data-theme="dark"] {
+  background-color: #000; /* or your dark bg */
+  color: #fff;
+}
+
+html[data-theme="dark"] .post-title {
+  color: #fff;
+}
