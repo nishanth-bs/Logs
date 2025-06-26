@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Decoded With Nishanth</title>
-    <link>https://nishanth-bs.github.io/Logs/</link>
+    <link>https://nishanth-bs.github.io/</link>
     <description>Recent content on Decoded With Nishanth</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
-    <atom:link href="https://nishanth-bs.github.io/Logs/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://nishanth-bs.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
-      <link>https://nishanth-bs.github.io/Logs/posts/mastering-swift-combine-5-essential-caveats-to-remember/</link>
+      <link>https://nishanth-bs.github.io/posts/mastering-swift-combine-5-essential-caveats-to-remember/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://nishanth-bs.github.io/Logs/posts/mastering-swift-combine-5-essential-caveats-to-remember/</guid>
+      <guid>https://nishanth-bs.github.io/posts/mastering-swift-combine-5-essential-caveats-to-remember/</guid>
       <description>&lt;p&gt;&lt;em&gt;Combine framework’s caveats: Learn key pitfalls and actionable insights for effective integration into your code.&lt;/em&gt;&lt;/p&gt;
 &lt;h1 id=&#34;mastering-swift-combine-5-essential-caveats-to-remember&#34;&gt;Mastering Swift Combine: 5 Essential Caveats to Remember&lt;/h1&gt;
 &lt;h3 id=&#34;combine-frameworks-caveats-learn-key-pitfalls-and-actionable-insights-for-effective-integration-into-your-code&#34;&gt;Combine framework’s caveats: Learn key pitfalls and actionable insights for effective integration into your code.&lt;/h3&gt;
