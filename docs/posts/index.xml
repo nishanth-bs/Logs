@@ -6,11 +6,12 @@
     <description>Recent content in Posts on Decoded With Nishanth</description>
     <generator>Hugo -- 0.147.9</generator>
     <language>en-us</language>
+    <lastBuildDate>Thu, 26 Jun 2025 10:00:00 +0530</lastBuildDate>
     <atom:link href="https://nishanth-bs.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title></title>
+      <title>Mastering Swift Combine: 5 Essential Caveats to Remember</title>
       <link>https://nishanth-bs.github.io/posts/mastering-swift-combine-5-essential-caveats-to-remember/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 26 Jun 2025 10:00:00 +0530</pubDate>
       <guid>https://nishanth-bs.github.io/posts/mastering-swift-combine-5-essential-caveats-to-remember/</guid>
       <description>&lt;p&gt;&lt;em&gt;Combine framework’s caveats: Learn key pitfalls and actionable insights for effective integration into your code.&lt;/em&gt;&lt;/p&gt;
 &lt;h1 id=&#34;mastering-swift-combine-5-essential-caveats-to-remember&#34;&gt;Mastering Swift Combine: 5 Essential Caveats to Remember&lt;/h1&gt;
