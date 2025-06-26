@@ -11,3 +11,6 @@ theme = 'PaperMod'
   showReadingTime = true
   showShareButtons = true
   defaultTheme = "auto"
+
+[permalinks]
+  posts = "/:slug/"
