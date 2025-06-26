@@ -1,6 +1,7 @@
 baseURL = 'https://nishanth-bs.github.io/'
 relativeURLs = true
 canonifyURLs = true
+uglyURLs = false
 languageCode = 'en-us'
 title = 'Decoded With Nishanth'
 theme = 'PaperMod'
