@@ -252,3 +252,20 @@ html[data-theme="dark"] {
 html[data-theme="dark"] .post-title {
   color: #fff;
 }
+
+.view-count {
+  font-size: 0.9rem;
+  color: gray;
+  margin-left: 0.5rem;
+}
+.user-count-wrapper {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: gray;
+  clear: both;
+}
+.user-count-number {
+  font-weight: 600;
+}
